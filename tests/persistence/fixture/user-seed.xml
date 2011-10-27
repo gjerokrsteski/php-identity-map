@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+  <tbl_user id="1" nickname="joe123" password="love123" />
+  <tbl_user id="2" nickname="mike123" password="love456" />
+</dataset>
