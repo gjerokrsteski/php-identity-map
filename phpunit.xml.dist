@@ -21,7 +21,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="model-stock-portfolio">
+        <testsuite name="php-identity-map">
           <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
