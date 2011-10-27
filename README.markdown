@@ -14,7 +14,7 @@ This example code requires:
 This example code implements:
 -----------------------
 * Active-record pattern
-* Identity-pap pattern
+* Identity-map pattern
 
 Why identity mapping?
 ---------------------
