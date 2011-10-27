@@ -30,13 +30,13 @@ Active-record without identity map
       $user1 = $userMapper->findById(1); // new object created
       $user2 = $userMapper->findById(1); // new object created
 
-      echo $user1; // joe123
-      echo $user2; // joe123
+      echo $user1->getNickname(); // joe123
+      echo $user2->getNickname(); // joe123
 
       $user1->setNickname('bob78');
 
-      echo $user1; // bob78
-      echo $user2; // joe123 -> ?!?
+      echo $user1->getNickname(); // bob78
+      echo $user2->getNickname(); // joe123 -> ?!?
 
 Active-record with identity map
 ----------------------------------
@@ -48,13 +48,13 @@ loaded domain instances.
       $user1 = $userMapper->findById(1); // new object created
       $user2 = $userMapper->findById(1); // returns same object
 
-      echo $user1; // joe123
-      echo $user2; // joe123
+      echo $user1->getNickname(); // joe123
+      echo $user2->getNickname(); // joe123
 
       $user1->setNickname('bob78');
 
-      echo $user1; // bob78
-      echo $user2; // bob78 -> yes, much better
+      echo $user1->getNickname(); // bob78
+      echo $user2->getNickname(); // bob78 -> yes, much better
 
 By using an identity map you can be confident that your domain entity is
 shared throughout your application for the duration of the request.
