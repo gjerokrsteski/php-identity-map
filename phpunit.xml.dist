@@ -12,11 +12,11 @@
     forceCoversAnnotation="false"
     mapTestClassNameToCoveredClassName="false"
     bootstrap="test-bootstrap.php">
-
+    
     <php>
-        <var name="DB_DSN" value="mysql:host=localhost;dbname=krsteski_experimental;port=5106" />
+        <var name="DB_DSN" value="mysql:host=localhost;dbname=database1" />
         <var name="DB_USER" value="root" />
-        <var name="DB_PASSWD" value="" />
+        <var name="DB_PASSWD" value="Liebe123" />
         <var name="DB_DBNAME" value="mysql" />
     </php>
 

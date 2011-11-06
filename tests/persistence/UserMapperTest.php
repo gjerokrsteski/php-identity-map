@@ -35,43 +35,34 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
         );
     }
 
-   /**
-    * @covers UserMapper::getAllIds
-    */
-    public function testListOfUserAccountIdsCanBeRetrieved()
-    {
-        $this->assertEquals(array(1, 2), $this->mapper->getAllIds());
-    }
-
     public function testInsertingNewUserAndCompareObjectsThanDelete()
     {
-      $user = new User();
-      $user->setNickname('billy')->setPassword('gatter');
+      $user = new User('billy', 'gatter');
 
       $insertId = $this->mapper->insert($user);
 
-      $user2 = $this->mapper->findById($insertId);
+      $user2 = $this->mapper->find($insertId);
 
       $this->assertTrue($user === $user2);
       $this->assertTrue($this->mapper->delete($user2));
     }
 
     /**
-    * @covers UserMapper::findById
-    */
+     * @covers UserMapper::findById
+     */
     public function testUserCanBeFoundById()
     {
-        $user = $this->mapper->findById(1);
+        $user = $this->mapper->find(1);
 
         $this->assertEquals('joe123', $user->getNickname());
     }
 
     /**
-    * @expectedException OutOfBoundsException
-    */
+     * @expectedException OutOfBoundsException
+     */
     public function testUserCanNotBeFoundById()
     {
-        $user = $this->mapper->findById(123);
+        $user = $this->mapper->find(123);
     }
 
    /**
@@ -79,24 +70,21 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testUserCanBeInserted()
     {
-        $newUser = new User();
-        $newUser
-            ->setNickname('maxf')
-            ->setPassword('love123');
+        $newUser = new User('maxf', 'love123');
 
         $lastinsertId = $this->mapper->insert($newUser);
 
         $this->assertEquals(3, $lastinsertId);
 
-        $user = $this->mapper->findById($lastinsertId);
+        $user = $this->mapper->find($lastinsertId);
 
         $this->assertEquals('maxf', $user->getNickname());
     }
 
     public function testIdentityMapInteractionAndConsistency()
     {
-      $user1 = $this->mapper->findById(1);
-      $user2 = $this->mapper->findById(1);
+      $user1 = $this->mapper->find(1);
+      $user2 = $this->mapper->find(1);
 
       // expects same nickname in each object.
       $this->assertEquals($user2->getNickname(), $user1->getNickname());

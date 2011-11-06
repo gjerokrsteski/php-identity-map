@@ -3,6 +3,16 @@ class User
 {
     protected $nickname;
     protected $password;
+    
+    /**
+     * @param string $nickname
+     * @param string $password
+     */
+    public function __construct($nickname = null, $password = null)
+    {
+    	$this->nickname = $nickname;
+    	$this->password = $password;
+    }
 
     /**
      * @return string The $nickname

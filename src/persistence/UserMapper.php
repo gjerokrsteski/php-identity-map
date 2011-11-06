@@ -21,26 +21,11 @@ class UserMapper implements MapperInterface
     }
 
     /**
-     * @return array
-     */
-    public function getAllIds()
-    {
-        $result = array();
-
-        foreach ($this->db->query('SELECT id FROM tbl_user') as $row)
-        {
-            $result[] = $row['id'];
-        }
-
-        return $result;
-    }
-
-    /**
      * @param integer $id
      * @throws OutOfBoundsException
      * @return User
      */
-    public function findById($id)
+    public function find($id)
     {
         if (true === $this->identityMap->hasId($id))
         {
@@ -59,11 +44,7 @@ class UserMapper implements MapperInterface
         }
 
         $object = $sth->fetchObject();
-        $user = new User();
-
-        $user
-          ->setPassword($object->password)
-          ->setNickname($object->nickname);
+        $user   = new User($object->nickname, $object->password);
 
         $this->identityMap->set($id, $user);
 

@@ -8,6 +8,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
     }
+    
     /**
      * Cleans up the environment after running a test.
      */
@@ -28,18 +29,13 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($reflectedUser->hasProperty('nickname'));
         $this->assertEquals(null, $user->getNickname());
 
-
         $this->assertTrue($reflectedUser->hasProperty('password'));
         $this->assertEquals(null, $user->getPassword());
     }
 
-
     public function testInstanceNoException()
     {
-        $newUser = new User();
-        $newUser
-            ->setNickname('maxf')
-            ->setPassword('love123');
+        $newUser = new User('maxf', 'love123');
 
         $this->assertEquals('love123', $newUser->getPassword());
     }

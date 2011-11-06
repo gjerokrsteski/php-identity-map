@@ -7,13 +7,8 @@ interface MapperInterface
     public function __construct(PDO $db);
 
     /**
-     * @return array
-     */
-    public function getAllIds();
-
-    /**
      * @param integer $id
      * @return array
      */
-    public function findById($id);
+    public function find($id);
 }
