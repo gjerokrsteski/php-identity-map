@@ -27,8 +27,8 @@ Active-record without identity map
 
       $userMapper = new UserMapper($pdo);
 
-      $user1 = $userMapper->findById(1); // new object created
-      $user2 = $userMapper->findById(1); // new object created
+      $user1 = $userMapper->find(1); // creates new object
+      $user2 = $userMapper->find(1); // creates new object
 
       echo $user1->getNickname(); // joe123
       echo $user2->getNickname(); // joe123
@@ -45,8 +45,8 @@ loaded domain instances.
 
       $userMapper = new UserMapper($pdo);
 
-      $user1 = $userMapper->findById(1); // new object created
-      $user2 = $userMapper->findById(1); // returns same object
+      $user1 = $userMapper->find(1); // creates new object
+      $user2 = $userMapper->find(1); // returns same object
 
       echo $user1->getNickname(); // joe123
       echo $user2->getNickname(); // joe123
