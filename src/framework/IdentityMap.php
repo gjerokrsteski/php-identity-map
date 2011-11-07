@@ -1,5 +1,4 @@
 <?php
-use Doctrine\DBAL\Types\BooleanType;
 class IdentityMap
 {
     protected $idToObject = array();
