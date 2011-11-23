@@ -28,7 +28,7 @@ class IdentityMap
     {
         if (false === $this->hasObject($object))
         {
-            throw new OutOfBoundsException;
+            throw new OutOfBoundsException();
         }
 
         return $this->objectToId[$object];
@@ -61,7 +61,7 @@ class IdentityMap
     {
         if (false === $this->hasId($id))
         {
-            throw new OutOfBoundsException;
+            throw new OutOfBoundsException();
         }
 
         return $this->idToObject[$id];

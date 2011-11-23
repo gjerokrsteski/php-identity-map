@@ -2,25 +2,9 @@
 class UserTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Prepares the environment before running a test.
+     * @test
      */
-    protected function setUp ()
-    {
-        parent::setUp();
-    }
-    
-    /**
-     * Cleans up the environment after running a test.
-     */
-    protected function tearDown ()
-    {
-        parent::tearDown();
-    }
-
-    /**
-     * tests the status before the instance.
-     */
-    public function testPropertiesBeforeSettingValues()
+    public function PropertiesBeforeSettingValues()
     {
         $user = new User();
 
@@ -33,11 +17,30 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, $user->getPassword());
     }
 
-    public function testInstanceNoException()
+    /**
+     * @test
+     */
+    public function InstanceNoException()
     {
         $newUser = new User('maxf', 'love123');
 
         $this->assertEquals('love123', $newUser->getPassword());
+    }
+
+    /**
+     * @test
+     */
+    public function AddSomeArticles()
+    {
+      $newUser = new User('Conan', 'He rocks!');
+
+      $this->assertFalse($newUser->hasArticles());
+
+      $newUser->addArticle('Conan I', 'Some content about conan')
+              ->addArticle('Conan I', 'Some content about conan');
+
+      $this->assertTrue($newUser->hasArticles());
+      $this->assertInstanceOf('Article', current($newUser->getArticles()));
     }
 }
 

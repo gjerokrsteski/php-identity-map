@@ -35,7 +35,10 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
         );
     }
 
-    public function testInsertingNewUserAndCompareObjectsThanDelete()
+    /**
+     * @test
+     */
+    public function InsertingNewUserAndCompareObjectsThanDelete()
     {
       $user = new User('billy', 'gatter');
 
@@ -48,9 +51,10 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
     }
 
     /**
+     * @test
      * @covers UserMapper::findById
      */
-    public function testUserCanBeFoundById()
+    public function UserCanBeFoundById()
     {
         $user = $this->mapper->find(1);
 
@@ -58,17 +62,19 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
     }
 
     /**
+     * @test
      * @expectedException OutOfBoundsException
      */
-    public function testUserCanNotBeFoundById()
+    public function UserCanNotBeFoundById()
     {
         $user = $this->mapper->find(123);
     }
 
    /**
+    * @test
     * @covers UserMapper::insert
     */
-    public function testUserCanBeInserted()
+    public function UserCanBeInserted()
     {
         $newUser = new User('maxf', 'love123');
 
@@ -81,7 +87,10 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertEquals('maxf', $user->getNickname());
     }
 
-    public function testIdentityMapInteractionAndConsistency()
+    /**
+     * @test
+     */
+    public function IdentityMapInteractionAndConsistency()
     {
       $user1 = $this->mapper->find(1);
       $user2 = $this->mapper->find(1);
@@ -97,5 +106,25 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
 
       // than update into the database.
       $this->mapper->update($user2);
+    }
+
+    /**
+     * @test
+     */
+    public function PersistUserWithSomeArticles()
+    {
+      $newUser = new User('Conan', 'He rocks!');
+      $newUser->addArticle('Conan I', 'Some content about Conan')
+              ->addArticle('Conan II', 'Some content about Conan')
+              ->addArticle('Rambo III', 'Some content about Rambo');
+
+      $lastUserId = $this->mapper->insert($newUser);
+
+      $user = $this->mapper->find($lastUserId);
+
+      foreach ($user->getArticles() as $article)
+      {
+        $this->assertInstanceOf('Article', $article);
+      }
     }
 }

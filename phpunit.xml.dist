@@ -6,17 +6,17 @@
     colors="true"
     processIsolation="false"
     stopOnFailure="true"
-    syntaxCheck="false"
+    syntaxCheck="true"
     backupGlobals="false"
     backupStaticAttributes="false"
     forceCoversAnnotation="false"
     mapTestClassNameToCoveredClassName="false"
     bootstrap="test-bootstrap.php">
-    
+
     <php>
-        <var name="DB_DSN" value="mysql:host=localhost;dbname=database1" />
+        <var name="DB_DSN" value="mysql:host=localhost;dbname=krsteski_experimental;port=5106" />
         <var name="DB_USER" value="root" />
-        <var name="DB_PASSWD" value="Liebe123" />
+        <var name="DB_PASSWD" value="" />
         <var name="DB_DBNAME" value="mysql" />
     </php>
 
@@ -26,15 +26,6 @@
         </testsuite>
     </testsuites>
 
-    <logging>
-        <log type="coverage-html"
-             target="_coverage"
-             charset="UTF-8"
-             yui="true"
-             highlight="true"
-             lowUpperBound="35"
-             highLowerBound="70"/>
-   </logging>
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">

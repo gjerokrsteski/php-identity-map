@@ -1,25 +1,7 @@
 <?php
-class UserMapper implements MapperInterface
+class UserMapper
+  extends AbstractMapper
 {
-    /**
-     * @var PDO The database resource.
-     */
-    protected $db;
-
-    /**
-     * @var IdentityMap
-     */
-    protected $identityMap;
-
-    /**
-     * @param PDO $db
-     */
-    public function __construct(PDO $db)
-    {
-        $this->db          = $db;
-        $this->identityMap = new IdentityMap();
-    }
-
     /**
      * @param integer $id
      * @throws OutOfBoundsException
@@ -32,7 +14,10 @@ class UserMapper implements MapperInterface
             return $this->identityMap->getObject($id);
         }
 
-        $sth = $this->db->prepare('SELECT * FROM tbl_user WHERE id = :id');
+        $sth = $this->db->prepare(
+        	'SELECT * FROM tbl_user WHERE id = :id'
+        );
+
         $sth->bindValue(':id', $id, PDO::PARAM_INT);
         $sth->execute();
 
@@ -45,6 +30,24 @@ class UserMapper implements MapperInterface
 
         $object = $sth->fetchObject();
         $user   = new User($object->nickname, $object->password);
+
+        $attribute = new ReflectionProperty($user, 'id');
+        $attribute->setAccessible(true);
+        $attribute->setValue($user, $id);
+
+        $articleMapper = new ArticleMapper($this->db);
+
+        try
+        {
+          foreach ($articleMapper->findByUserId($id) as $article)
+          {
+              $user->pushArticle($article);
+          }
+        }
+        catch (OutOfBoundsException $e)
+        {
+           // no articles at the database.
+        }
 
         $this->identityMap->set($id, $user);
 
@@ -60,20 +63,39 @@ class UserMapper implements MapperInterface
     {
         if (true === $this->identityMap->hasObject($user))
         {
-            throw new MapperException('Object has an ID, cannot insert.');
+            throw new MapperException(
+            	'Object has an ID, cannot insert.'
+            );
         }
 
         $sth = $this->db->prepare(
-        	"INSERT INTO tbl_user (nickname, `password`) VALUES(':nick', ':passwd')"
+        	"INSERT INTO tbl_user (nickname, `password`) "
+          ."VALUES (:nick, :passwd)"
         );
 
         $sth->bindValue(':nick', $user->getNickname(), PDO::PARAM_STR);
         $sth->bindValue(':passwd', $user->getPassword(), PDO::PARAM_STR);
         $sth->execute();
 
-        $this->identityMap->set((int)$this->db->lastInsertId(), $user);
+        $id = (int) $this->db->lastInsertId();
 
-        return (int) $this->db->lastInsertId();
+        $attribute = new ReflectionProperty($user, 'id');
+        $attribute->setAccessible(true);
+        $attribute->setValue($user, $id);
+
+        if (true === $user->hasArticles())
+        {
+          $articleMapper = new ArticleMapper($this->db);
+
+          foreach ($user->getArticles() as $article)
+          {
+            $articleMapper->insert($article);
+          }
+        }
+
+        $this->identityMap->set($id, $user);
+
+        return $id;
     }
 
     /**
@@ -85,11 +107,14 @@ class UserMapper implements MapperInterface
     {
         if (false === $this->identityMap->hasObject($user))
         {
-            throw new MapperException('Object has no ID, cannot update.');
+            throw new MapperException(
+            	'Object has no ID, cannot update.'
+            );
         }
 
         $sth = $this->db->prepare(
-        	"UPDATE tbl_user SET nickname = :nick, `password` = :passwd WHERE id = :id"
+        	"UPDATE tbl_user "
+          ."SET nickname = :nick, `password` = :passwd WHERE id = :id"
         );
 
         $sth->bindValue(':nick', $user->getNickname(), PDO::PARAM_STR);
@@ -108,7 +133,9 @@ class UserMapper implements MapperInterface
     {
         if (false === $this->identityMap->hasObject($user))
         {
-            throw new MapperException('Object has no ID, cannot delete.');
+            throw new MapperException(
+            	'Object has no ID, cannot delete.'
+            );
         }
 
         $sth = $this->db->prepare(
