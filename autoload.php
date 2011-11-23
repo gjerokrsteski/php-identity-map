@@ -1,7 +1,7 @@
 <?php
 set_include_path(
     dirname(dirname(__FILE__))
-    .'/model-stock-portfolio'
+    .'/php-identity-map'
     .PATH_SEPARATOR
     .dirname(__FILE__)
     .PATH_SEPARATOR

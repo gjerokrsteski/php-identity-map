@@ -1,6 +1,9 @@
-CREATE TABLE IF NOT EXISTS `tbl_user` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `nickname` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `password` varchar(50) CHARACTER SET latin1 NOT NULL,
-   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS tbl_user (
+
+  id       INT NOT NULL AUTO_INCREMENT,
+  nickname VARCHAR(30) NOT NULL,
+  password VARCHAR(30) NOT NULL,
+
+  PRIMARY KEY (id)
+
+) TYPE=INNODB DEFAULT CHARSET=utf8;

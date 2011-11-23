@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+  <tbl_article
+      id="1"
+      userId="1"
+      title="An old proverb"
+      content="A man with two watches never knows what time it is."
+  />
+    <tbl_article
+      id="2"
+      userId="1"
+      title="An old proverb"
+      content="A man with two watches never knows what time it is."
+  />
+</dataset>

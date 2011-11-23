@@ -1,9 +1,15 @@
 <?php
 class User
 {
+    protected $id;
     protected $nickname;
     protected $password;
-    
+
+    /**
+     * @var array
+     */
+    protected $articles;
+
     /**
      * @param string $nickname
      * @param string $password
@@ -50,5 +56,31 @@ class User
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @return integer The unique id.
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function addArticle($title, $content)
+    {
+      $this->articles[] = new Article($title, $content, $this);
+    }
+
+    public function getArticles()
+    {
+      $this->articles;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasArticles()
+    {
+      return (true === is_array($this->articles) && false === empty($this->articles));
     }
 }

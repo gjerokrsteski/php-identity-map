@@ -1,25 +1,6 @@
 <?php
-class UserMapper implements MapperInterface
+class UserMapper extends AbstractMapper
 {
-    /**
-     * @var PDO The database resource.
-     */
-    protected $db;
-
-    /**
-     * @var IdentityMap
-     */
-    protected $identityMap;
-
-    /**
-     * @param PDO $db
-     */
-    public function __construct(PDO $db)
-    {
-        $this->db          = $db;
-        $this->identityMap = new IdentityMap();
-    }
-
     /**
      * @param integer $id
      * @throws OutOfBoundsException
@@ -46,6 +27,10 @@ class UserMapper implements MapperInterface
         $object = $sth->fetchObject();
         $user   = new User($object->nickname, $object->password);
 
+        $attribute = new ReflectionProperty($user, 'id');
+        $attribute->setAccessible(true);
+        $attribute->setValue($user, $id);
+
         $this->identityMap->set($id, $user);
 
         return $user;
@@ -64,14 +49,29 @@ class UserMapper implements MapperInterface
         }
 
         $sth = $this->db->prepare(
-        	"INSERT INTO tbl_user (nickname, `password`) VALUES(':nick', ':passwd')"
+        	"INSERT INTO tbl_user (nickname, `password`) VALUES (:nick, :passwd)"
         );
 
         $sth->bindValue(':nick', $user->getNickname(), PDO::PARAM_STR);
         $sth->bindValue(':passwd', $user->getPassword(), PDO::PARAM_STR);
         $sth->execute();
 
-        $this->identityMap->set((int)$this->db->lastInsertId(), $user);
+        $id = (int)$this->db->lastInsertId();
+
+        $attribute = new ReflectionProperty($user, 'id');
+        $attribute->setAccessible(true);
+        $attribute->setValue($user, $id);
+
+        if (true === $user->hasArticles())
+        {
+          $articleMapper = new ArticleMapper($this->db);
+
+          foreach ($user->getArticles() as $article) {
+            $articleMapper->insert($article);
+          }
+        }
+
+        $this->identityMap->set($id, $user);
 
         return (int) $this->db->lastInsertId();
     }
