@@ -1,7 +1,14 @@
 <?php
 class Article
 {
+  /**
+   * @var null|string
+   */
   protected $title;
+
+  /**
+   * @var null|string
+   */
   protected $content;
 
   /**
@@ -22,60 +29,60 @@ class Article
     $this->user    = $user;
   }
 
-	/**
-	 * @return string
-	 */
-	public function getTitle()
-	{
-	    return $this->title;
-	}
+  /**
+   * @return string
+   */
+  public function getTitle()
+  {
+    return $this->title;
+  }
 
-	/**
-	 * @param string $title
-	 * @return Article
-	 */
-	public function setTitle($title)
-	{
-	    $this->title = $title;
+  /**
+   * @param string $title
+   * @return Article
+   */
+  public function setTitle($title)
+  {
+    $this->title = $title;
 
-	    return $this;
-	}
+    return $this;
+  }
 
-	/**
-	 * @return string
-	 */
-	public function getContent()
-	{
-	    return $this->content;
-	}
+  /**
+   * @return string
+   */
+  public function getContent()
+  {
+    return $this->content;
+  }
 
-	/**
-	 * @param string $content
-	 * @return Article
-	 */
-	public function setContent($content)
-	{
-	    $this->content = $content;
+  /**
+   * @param string $content
+   * @return Article
+   */
+  public function setContent($content)
+  {
+    $this->content = $content;
 
-	    return $this;
-	}
+    return $this;
+  }
 
-	/**
-	 * @return User
-	 */
-	public function getUser()
-	{
-	    return $this->user;
-	}
+  /**
+   * @return User
+   */
+  public function getUser()
+  {
+    return $this->user;
+  }
 
-	/**
-	 * @param User $user
-	 * @return Article
-	 */
-	public function setUser(User $user)
-	{
-	    $this->user = $user;
+  /**
+   * @param User $user
+   * @return Article
+   */
+  public function setUser(User $user)
+  {
+    $this->user = $user;
 
-	    return $this;
-	}
+    return $this;
+  }
 }

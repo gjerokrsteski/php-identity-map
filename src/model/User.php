@@ -1,112 +1,119 @@
 <?php
 class User
 {
-    protected $id;
-    protected $nickname;
-    protected $password;
+  /**
+   * @var integer
+   */
+  protected $id;
 
-    /**
-     * One User has many Article instances.
-     * @var array A list of Article instances.
-     */
-    protected $articles;
+  /**
+   * @var null|string
+   */
+  protected $nickname;
 
-    /**
-     * @param string $nickname
-     * @param string $password
-     */
-    public function __construct($nickname = null, $password = null)
-    {
-    	$this->nickname = $nickname;
-    	$this->password = $password;
-    }
+  /**
+   * @var null|string
+   */
+  protected $password;
 
-    /**
-     * @return string The $nickname
-     */
-    public function getNickname()
-    {
-        return $this->nickname;
-    }
+  /**
+   * One User has many Article instances.
+   * @var array A list of Article instances.
+   */
+  protected $articles;
 
-    /**
-     * @param $nickname the $nickname to set.
-     * @return User
-     */
-    public function setNickname($nickname)
-    {
-        $this->nickname = $nickname;
+  /**
+   * @param string $nickname
+   * @param string $password
+   */
+  public function __construct($nickname = null, $password = null)
+  {
+    $this->nickname = $nickname;
+    $this->password = $password;
+  }
 
-        return $this;
-    }
+  /**
+   * @return string
+   */
+  public function getNickname()
+  {
+    return $this->nickname;
+  }
 
-    /**
-     * @return string The $password
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
+  /**
+   * @param string $nickname
+   * @return User
+   */
+  public function setNickname($nickname)
+  {
+    $this->nickname = $nickname;
 
-    /**
-     * @param $password the $password to set.
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
+    return $this;
+  }
 
-        return $this;
-    }
+  /**
+   * @return string
+   */
+  public function getPassword()
+  {
+    return $this->password;
+  }
 
-    /**
-     * @return integer The unique id.
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+  /**
+   * @param string $password
+   * @return User
+   */
+  public function setPassword($password)
+  {
+    $this->password = $password;
 
-    /**
-     * @param string $title
-     * @param string $content
-     * @return User
-     */
-    public function addArticle($title, $content)
-    {
-      $this->articles[] = new Article($title, $content, $this);
+    return $this;
+  }
 
-      return $this;
-    }
+  /**
+   * @return integer
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
 
-    /**
-     * @param Article $article
-     * @return User
-     */
-    public function pushArticle(Article $article)
-    {
-      $this->articles[] = $article;
+  /**
+   * @param string $title
+   * @param string $content
+   * @return User
+   */
+  public function addArticle($title, $content)
+  {
+    $this->articles[] = new Article($title, $content, $this);
 
-      return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * @return array A list of Article instances.
-     */
-    public function getArticles()
-    {
-      return $this->articles;
-    }
+  /**
+   * @param Article $article
+   * @return User
+   */
+  public function pushArticle(Article $article)
+  {
+    $this->articles[] = $article;
 
-    /**
-     * @return boolean
-     */
-    public function hasArticles()
-    {
-      return (
-        true === is_array($this->articles)
-        &&
-        false === empty($this->articles)
-      );
-    }
+    return $this;
+  }
+
+  /**
+   * @return array A list of Article instances.
+   */
+  public function getArticles()
+  {
+    return $this->articles;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function hasArticles()
+  {
+    return (true === is_array($this->articles) && false === empty($this->articles));
+  }
 }
