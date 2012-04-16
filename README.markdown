@@ -13,16 +13,16 @@ This example code requires:
 
 This example code implements:
 -----------------------
-* Active-record pattern
-* Identity-map pattern
+* Data-Mapper Pattern
+* Identity-Map Pattern
 
 Why identity mapping?
 ---------------------
-By using active-record pattern without an identity map, you can easily run
+By using Data-Mapper pattern without an identity map, you can easily run
 into problems because you may have more than one object that references
 the same domain entity.
 
-Active-record without identity map
+Data-Mapper without identity map
 ----------------------------------
 
       $userMapper = new UserMapper($pdo);
@@ -38,7 +38,7 @@ Active-record without identity map
       echo $user1->getNickname(); // bob78
       echo $user2->getNickname(); // joe123 -> ?!?
 
-Active-record with identity map
+Data-Mapper with identity map
 ----------------------------------
 The identity map solves this problem by acting as a registry for all
 loaded domain instances.
