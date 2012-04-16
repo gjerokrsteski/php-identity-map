@@ -1,3 +1,4 @@
 # Use wildcards as well
 *~
 *.dist
+phpunit.xml.dist
