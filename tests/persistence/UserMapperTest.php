@@ -43,6 +43,16 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
   /**
    * @test
    */
+  public function UserCanBeFoundById()
+  {
+    $user = $this->mapper->find(1);
+
+    $this->assertEquals('joe123', $user->getNickname());
+  }
+
+  /**
+   * @test
+   */
   public function InsertingNewUserAndCompareObjectsThanDelete()
   {
     $user = new User('billy', 'gatter');
@@ -57,27 +67,15 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
 
   /**
    * @test
-   * @covers UserMapper::findById
-   */
-  public function UserCanBeFoundById()
-  {
-    $user = $this->mapper->find(1);
-
-    $this->assertEquals('joe123', $user->getNickname());
-  }
-
-  /**
-   * @test
    * @expectedException OutOfBoundsException
    */
   public function UserCanNotBeFoundById()
   {
-    $user = $this->mapper->find(123);
+    $this->mapper->find(123);
   }
 
   /**
    * @test
-   * @covers UserMapper::insert
    */
   public function UserCanBeInserted()
   {
@@ -125,7 +123,13 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
 
     $lastUserId = $this->mapper->insert($newUser);
 
-    $user = $this->mapper->find($lastUserId, $withAssociations = true);
+    // unset the user-mapper and the identity-map - force db connection.
+    unset($this->mapper);
+
+    // create new user-mapper with new identity-map.
+    $this->mapper = new UserMapper($this->db);
+
+    $user = $this->mapper->find($lastUserId, true);
 
     foreach ($user->getArticles() as $article) {
       $this->assertInstanceOf('Article', $article);

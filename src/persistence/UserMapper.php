@@ -18,6 +18,7 @@ class UserMapper extends AbstractMapper
     );
 
     $sth->bindValue(':id', $id, PDO::PARAM_INT);
+    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'User');
     $sth->execute();
 
     if ($sth->rowCount() == 0) {
@@ -26,9 +27,10 @@ class UserMapper extends AbstractMapper
       );
     }
 
-    $object = $sth->fetchObject();
-    $user   = new User($object->nickname, $object->password);
+    // let pdo fetch the User instance for you.
+    $user = $sth->fetch();
 
+    // set the protected id of user via reflection.
     $attribute = new ReflectionProperty($user, 'id');
     $attribute->setAccessible(true);
     $attribute->setValue($user, $id);
@@ -39,9 +41,9 @@ class UserMapper extends AbstractMapper
       $articleMapper = new ArticleMapper($this->db);
 
       try {
-        foreach ($articleMapper->findByUserId($id) as $article) {
-          $user->pushArticle($article);
-        }
+
+        $user->setArticles($articleMapper->findByUserId($id));
+
       } catch (OutOfBoundsException $e) {
         // no articles at the database.
       }
@@ -78,9 +80,11 @@ class UserMapper extends AbstractMapper
     $attribute->setAccessible(true);
     $attribute->setValue($user, $id);
 
+    // if user has assosiated articles.
     if (true === $user->hasArticles()) {
       $articleMapper = new ArticleMapper($this->db);
 
+      // than insert the articles too.
       foreach ($user->getArticles() as $article) {
         $articleMapper->insert($article);
       }
@@ -111,7 +115,13 @@ class UserMapper extends AbstractMapper
     $sth->bindValue(':passwd', $user->getPassword(), PDO::PARAM_STR);
     $sth->bindValue(':id', $this->identityMap->getId($user), PDO::PARAM_INT);
 
-    return $sth->execute();
+    $sth->execute();
+
+    if ($sth->rowCount() == 1) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -130,7 +140,12 @@ class UserMapper extends AbstractMapper
     );
 
     $sth->bindValue(':id', $this->identityMap->getId($user), PDO::PARAM_INT);
+    $sth->execute();
 
-    return $sth->execute();
+    if ($sth->rowCount() == 0) {
+      return false;
+    }
+
+    return true;
   }
 }

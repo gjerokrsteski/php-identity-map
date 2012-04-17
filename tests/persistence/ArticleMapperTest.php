@@ -89,12 +89,35 @@ class ArticleMapperTest extends PHPUnit_Extensions_Database_TestCase
    */
   public function UpdateArticle()
   {
-    $articles1 = $this->mapper->find(2);
+    $article = $this->mapper->find(2);
+    $article1 = $this->mapper->find(2);
 
-    $articles1->setTitle('conan')->setContent('the barbar');
+    $article1->setTitle('conan')->setContent('the barbar');
 
-    $res = $this->mapper->update($articles1);
+    $res = $this->mapper->update($article1);
 
     $this->assertTrue($res);
   }
+
+  /**
+   * @test
+   */
+  public function DeleteArticle()
+  {
+    // create new user and insert.
+    $user = new User('ZZ', 'TOP');
+    $userMapper = new UserMapper($this->db);
+    $userMapper->insert($user);
+
+    // create an article and assosiate it to the user.
+    $article = new Article('Make Love', 'Some content about love', $user);
+    $lastArticleId = $this->mapper->insert($article);
+
+    unset($this->mapper);
+
+    $this->mapper = new ArticleMapper($this->db);
+
+    $this->mapper->delete($this->mapper->find($lastArticleId));
+  }
+
 }

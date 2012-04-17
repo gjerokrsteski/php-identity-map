@@ -25,4 +25,9 @@ abstract class AbstractMapper implements InterfaceMapper
    * @param integer $id
    */
   abstract public function find($id);
+
+  public function __destruct()
+  {
+    unset($this->identityMap, $this->db);
+  }
 }

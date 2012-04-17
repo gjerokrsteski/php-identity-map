@@ -91,12 +91,12 @@ class User
   }
 
   /**
-   * @param Article $article
+   * @param array $article List of Article objects.
    * @return User
    */
-  public function pushArticle(Article $article)
+  public function setArticles(array $article)
   {
-    $this->articles[] = $article;
+    $this->articles = $article;
 
     return $this;
   }

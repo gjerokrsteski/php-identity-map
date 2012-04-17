@@ -17,6 +17,7 @@ class ArticleMapper extends AbstractMapper
     );
 
     $sth->bindValue(':id', $id, PDO::PARAM_INT);
+    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Article');
     $sth->execute();
 
     if ($sth->rowCount() == 0) {
@@ -25,8 +26,8 @@ class ArticleMapper extends AbstractMapper
       );
     }
 
-    $object  = $sth->fetchObject();
-    $article = new Article($object->title, $object->content);
+    // let pdo fetch the Article instance for you.
+    $article = $sth->fetch();
 
     $this->identityMap->set($id, $article);
 
@@ -40,24 +41,21 @@ class ArticleMapper extends AbstractMapper
    */
   public function findByUserId($id)
   {
-    $articles = array();
-
     $sth = $this->db->prepare(
-      'SELECT * FROM tbl_article WHERE userId = :id'
+      "SELECT * FROM tbl_article WHERE userId = :userId"
     );
 
-    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+    $sth->bindValue(':userId', $id, PDO::PARAM_INT);
+    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Article');
     $sth->execute();
 
     if ($sth->rowCount() == 0) {
       throw new OutOfBoundsException(
-        sprintf('No article with id #%d exists.', $id)
+        sprintf('No article with userId #%d exists.', $id)
       );
     }
 
-    foreach ($sth->fetchAll(PDO::FETCH_OBJ) as $object) {
-      $articles[] = new Article($object->title, $object->content);
-    }
+    $articles = $sth->fetchAll();
 
     return $articles;
   }
@@ -107,8 +105,13 @@ class ArticleMapper extends AbstractMapper
     $sth->bindValue(':title', $article->getTitle(), PDO::PARAM_STR);
     $sth->bindValue(':content', $article->getContent(), PDO::PARAM_STR);
     $sth->bindValue(':id', $this->identityMap->getId($article), PDO::PARAM_INT);
+    $sth->execute();
 
-    return $sth->execute();
+    if ($sth->rowCount() == 1) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -127,7 +130,12 @@ class ArticleMapper extends AbstractMapper
     );
 
     $sth->bindValue(':id', $this->identityMap->getId($article), PDO::PARAM_INT);
+    $sth->execute();
 
-    return $sth->execute();
+    if ($sth->rowCount() == 0) {
+      return false;
+    }
+
+    return true;
   }
 }
