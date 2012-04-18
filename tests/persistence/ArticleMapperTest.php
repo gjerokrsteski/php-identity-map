@@ -89,7 +89,6 @@ class ArticleMapperTest extends PHPUnit_Extensions_Database_TestCase
    */
   public function UpdateArticle()
   {
-    $article = $this->mapper->find(2);
     $article1 = $this->mapper->find(2);
 
     $article1->setTitle('conan')->setContent('the barbar');

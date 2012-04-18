@@ -1,5 +1,5 @@
 <?php
-abstract class AbstractMapper implements InterfaceMapper
+abstract class AbstractMapper
 {
   /**
    * @var PDO The database resource.
@@ -20,14 +20,15 @@ abstract class AbstractMapper implements InterfaceMapper
     $this->identityMap = new IdentityMap();
   }
 
-  /**
-   * @abstract
-   * @param integer $id
-   */
-  abstract public function find($id);
-
   public function __destruct()
   {
     unset($this->identityMap, $this->db);
   }
+
+  /**
+   * @abstract
+   * @param integer $id
+   * @throws OutOfBoundsException If no item found.
+   */
+  abstract public function find($id);
 }
