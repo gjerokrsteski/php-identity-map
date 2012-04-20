@@ -85,7 +85,8 @@ class User
    */
   public function addArticle($title, $content)
   {
-    $this->articles[] = new Article($title, $content, $this);
+    $article = new Article($title, $content);
+    $this->articles[] = $article->setUser($this);
 
     return $this;
   }
