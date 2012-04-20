@@ -109,7 +109,8 @@ class ArticleMapperTest extends PHPUnit_Extensions_Database_TestCase
     $userMapper->insert($user);
 
     // create an article and assosiate it to the user.
-    $article = new Article('Make Love', 'Some content about love', $user);
+    $article = new Article('Make Love', 'Some content about love');
+    $article->setUser($user);
     $lastArticleId = $this->mapper->insert($article);
 
     unset($this->mapper);

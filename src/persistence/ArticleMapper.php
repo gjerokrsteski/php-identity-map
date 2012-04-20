@@ -17,7 +17,7 @@ class ArticleMapper extends AbstractMapper
     );
 
     $sth->bindValue(':id', $id, PDO::PARAM_INT);
-    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Article');
+    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Article', array('title', 'content'));
     $sth->execute();
 
     if ($sth->rowCount() == 0) {
@@ -46,7 +46,7 @@ class ArticleMapper extends AbstractMapper
     );
 
     $sth->bindValue(':userId', $id, PDO::PARAM_INT);
-    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Article');
+    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Article', array('title', 'content'));
     $sth->execute();
 
     if ($sth->rowCount() == 0) {

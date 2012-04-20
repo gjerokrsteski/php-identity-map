@@ -3,11 +3,10 @@ class UserMapper extends AbstractMapper
 {
   /**
    * @param integer $id
-   * @param bool $withAssociations
    * @return User
    * @throws OutOfBoundsException
    */
-  public function find($id, $withAssociations = false)
+  public function find($id)
   {
     if (true === $this->identityMap->hasId($id)) {
       return $this->identityMap->getObject($id);
@@ -18,7 +17,7 @@ class UserMapper extends AbstractMapper
     );
 
     $sth->bindValue(':id', $id, PDO::PARAM_INT);
-    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'User');
+    $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'User', array('nickname', 'password'));
     $sth->execute();
 
     if ($sth->rowCount() == 0) {
@@ -35,20 +34,17 @@ class UserMapper extends AbstractMapper
     $attribute->setAccessible(true);
     $attribute->setValue($user, $id);
 
-    // if the user associations should be loaded.
-    if (true === $withAssociations) {
+    // load all user's articles
+    $articleMapper = new ArticleMapper($this->db);
 
-      $articleMapper = new ArticleMapper($this->db);
+    try {
 
-      try {
+      $user->setArticles($articleMapper->findByUserId($id));
 
-        $user->setArticles($articleMapper->findByUserId($id));
-
-      } catch (OutOfBoundsException $e) {
-        // no articles at the database.
-      }
+    } catch (OutOfBoundsException $e) {
+	// no articles at the database.
     }
-
+    
     $this->identityMap->set($id, $user);
 
     return $user;
@@ -86,6 +82,7 @@ class UserMapper extends AbstractMapper
 
       // than insert the articles too.
       foreach ($user->getArticles() as $article) {
+	$article->setUser($user);
         $articleMapper->insert($article);
       }
     }

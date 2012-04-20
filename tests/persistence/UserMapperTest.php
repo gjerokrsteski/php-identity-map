@@ -129,7 +129,7 @@ class UserMapperTest extends PHPUnit_Extensions_Database_TestCase
     // create new user-mapper with new identity-map.
     $this->mapper = new UserMapper($this->db);
 
-    $user = $this->mapper->find($lastUserId, true);
+    $user = $this->mapper->find($lastUserId);
 
     foreach ($user->getArticles() as $article) {
       $this->assertInstanceOf('Article', $article);

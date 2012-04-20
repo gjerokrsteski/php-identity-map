@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS tbl_article (
 
   id      INT NOT NULL AUTO_INCREMENT,
-  title   VARCHAR(30),
-  content VARCHAR(255),
+  title   VARCHAR(30) NOT NULL,
+  content VARCHAR(255) NOT NULL,
   userId  INT NOT NULL,
 
   PRIMARY KEY (id),

@@ -4,9 +4,9 @@ class UserTest extends PHPUnit_Framework_TestCase
   /**
    * @test
    */
-  public function PropertiesBeforeSettingValues()
+  public function CreatingNewInstance()
   {
-    $user = new User();
+    $user = new User(null, null);
 
     $reflectedUser = new ReflectionClass(get_class($user));
 

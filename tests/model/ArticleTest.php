@@ -4,9 +4,9 @@ class ArticleTest extends PHPUnit_Framework_TestCase
   /**
    * @test
    */
-  public function PropertiesBeforeSettingValues()
+  public function CreatingNewInstance()
   {
-    $article = new Article();
+    $article = new Article(null, null);
 
     $reflectedArticle = new ReflectionClass(get_class($article));
 
@@ -25,7 +25,7 @@ class ArticleTest extends PHPUnit_Framework_TestCase
    */
   public function InstanceNoException()
   {
-    new Article('the title', 'the content', new User());
+    new Article('the title', 'the content');
   }
 }
 
