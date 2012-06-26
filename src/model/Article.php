@@ -20,7 +20,6 @@ class Article
   /**
    * @param string $title
    * @param string $content
-   * @param User $user
    */
   public function __construct($title, $content)
   {

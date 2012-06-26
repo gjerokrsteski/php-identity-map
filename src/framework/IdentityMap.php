@@ -19,7 +19,7 @@ class IdentityMap
 
   /**
    * @param integer $id
-   * @param object $object
+   * @param mixed $object
    */
   public function set($id, $object)
   {
@@ -28,7 +28,7 @@ class IdentityMap
   }
 
   /**
-   * @param object $object
+   * @param mixed $object
    * @throws OutOfBoundsException
    * @return integer
    */
@@ -51,7 +51,7 @@ class IdentityMap
   }
 
   /**
-   * @param object $object
+   * @param mixed $object
    * @return boolean
    */
   public function hasObject($object)

@@ -1,4 +1,10 @@
 <?php
+/**
+ * @method insert($entity)
+ * @method update($entity)
+ * @method delete($entity)
+ * @method find($id)
+ */
 abstract class AbstractMapper
 {
   /**
@@ -24,11 +30,4 @@ abstract class AbstractMapper
   {
     unset($this->identityMap, $this->db);
   }
-
-  /**
-   * @abstract
-   * @param integer $id
-   * @throws OutOfBoundsException If no item found.
-   */
-  abstract public function find($id);
 }

@@ -82,7 +82,7 @@ class UserMapper extends AbstractMapper
 
       // than insert the articles too.
       foreach ($user->getArticles() as $article) {
-	$article->setUser($user);
+	      $article->setUser($user);
         $articleMapper->insert($article);
       }
     }
