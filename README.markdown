@@ -62,3 +62,12 @@ shared throughout your application for the duration of the request.
 Note that using an identity map is not the same as adding a cache layer
 to your mappers. Although caching is useful and encouraged, it can still
 produce duplicate objects for the same domain entity.
+
+Load the Data-Mappers with the Repository class
+-----------------------------------------------
+
+
+      $repository = new Repository($this->db);
+      $userMapper = $repository->load('User');
+      $insertId = $userMapper->insert(new User('billy', 'gatter'));
+      
